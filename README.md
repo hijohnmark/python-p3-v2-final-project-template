@@ -25,7 +25,7 @@ The Continent class contains the following methods:
 
 6. **`num_countries(self, num_countries)` (setter)**: Sets the number of countries in the continent, raising a `ValueError` if the input is not an integer.
 
-7. **`create_table(cls)`**: Creates a SQL table for storing continents if it does not already exist.
+7. **`create_table(cls)`**: Creates a SQL table for storing continents if it does not already exist. 
 
 8. **`drop_table(cls)`**: Drops the SQL table for continents if it exists.
 
