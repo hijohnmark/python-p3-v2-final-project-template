@@ -67,7 +67,7 @@ def add_new_continent():
         Continent.create("Australia", 3)
         print("G'day mate! Australia has been added successfully.")
     elif name == "South America":
-        Continent.create("South America", )
+        Continent.create("South America", 15)
         print("Ándale! South America has been added successfully.")
     elif name == "North America":
         Continent.create("North America", 23)
