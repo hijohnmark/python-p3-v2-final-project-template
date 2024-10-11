@@ -143,9 +143,7 @@ The following features are planned for future development phases:
 
 - Organize all countries by most recently visited
 - Update information about country
-- See what kind of experience I had there (rating out of 10)
 - Add multiple visits per country and years visited
-- Show percentage of countries I’ve visited within a content
-- Color code continents by how many countries I’ve visited: Red (0-24%) > Orange (25-49%) > Yellow (50-75%) > Green (76-99%) > Blue (100%)
-- Separate class for countries I want to visit
+- Show percentage of countries visited within a content
+- Color code continents by how many countries visited: Red (0-24%) > Orange (25-49%) > Yellow (50-75%) > Green (76-99%) > Blue (100%)
 - Auto-add continents when countries are added that include a continent that has not yet been added to the database.
