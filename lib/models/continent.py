@@ -120,6 +120,7 @@ class Continent:
             cls.all[continent.id] = continent
         return continent
 
+    #CLASS METHOD - GET ALL
     @classmethod
     def get_all(cls):
         sql = """
@@ -131,6 +132,7 @@ class Continent:
 
         return [cls.instance_from_db(row) for row in rows]
     
+    #CLASS METHOD - FIND BY NAME
     @classmethod
     def find_by_name(cls, name):
         sql = """
