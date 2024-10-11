@@ -43,6 +43,7 @@ class Continent:
             raise ValueError(
                 "Number of countries must be an integer."
             )
+        
     #CLASS METHOD - CREATE A TABLE   
     @classmethod
     def create_table(cls):
@@ -55,6 +56,7 @@ class Continent:
         CURSOR.execute(sql)
         CONN.commit()
 
+    #CLASS METHOD - DROP TABLE
     @classmethod
     def drop_table(cls):
         sql = """
