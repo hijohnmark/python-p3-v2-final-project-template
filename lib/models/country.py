@@ -18,6 +18,7 @@ class Country:
             f"Continent: {self.continent_name}>"
         )
     
+    # SET PROPERTIES FOR CLASS ATTRIBUTES
     @property
     def name(self):
         return self._name 
