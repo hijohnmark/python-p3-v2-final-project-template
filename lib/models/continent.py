@@ -76,6 +76,7 @@ class Continent:
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
+    #CLASS METHOD - CREATE ENTRY
     @classmethod
     def create(cls, name, num_countries):
         continent = cls(name, num_countries)
