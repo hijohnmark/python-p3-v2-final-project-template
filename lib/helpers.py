@@ -34,8 +34,7 @@ def list_continent_countries():
             print(country.name)
     else:
         print(
-            f"Continent {name_} not found. Please check your spelling."
-            "Continent names are case-sensitive."
+            f"Continent {name_} not found. Please enter a continent you have visited before."
             )
 
 def add_new_country():
