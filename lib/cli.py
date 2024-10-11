@@ -66,7 +66,6 @@ def countries_menu():
         else:
             print("Invalid choice. Please try again!")
 
-# CONTINENTS MENU
 def continents_menu():
     while True:
         print("**Continents I've Visited**")
