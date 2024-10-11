@@ -65,6 +65,7 @@ class Continent:
         CURSOR.execute(sql)
         CONN.commit()
 
+    #SAVE METHOD
     def save(self):
         sql = """
             INSERT INTO continents (name, num_countries)
@@ -103,7 +104,7 @@ class Continent:
         del type(self).all[self.id]
 
         self.id = None
-        
+
     #CLASS METHOD - INSTANCE FROM DB
     @classmethod
     def instance_from_db(cls, row):
