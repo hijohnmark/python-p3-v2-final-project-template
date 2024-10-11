@@ -95,7 +95,6 @@ def continents_menu():
         else:
             print("Invalid choice. Please try again!")
 
-# AFTER RESULTS MENU
 def after_results_menu():
     while True:
         print("What would you like to do now?")
