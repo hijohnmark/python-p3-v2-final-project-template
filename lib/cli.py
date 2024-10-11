@@ -18,7 +18,7 @@ from helpers import (
 def main():
     while True:
         opening_menu()
-        choice = input("> ")
+        choice = input("Choose a number to continue > ")
         if choice == "0":
             exit_program()
         elif choice == "1":
@@ -45,7 +45,7 @@ def countries_menu():
         print("5. Continents I've visited")
         print("6. Main menu")
         
-        choice = input("> ")
+        choice = input("Choose a number to continue > ")
         if choice == "1":
             list_continent_countries()
             after_results_menu()
@@ -76,7 +76,7 @@ def continents_menu():
         print("4. Delete continent")
         print("5. Main menu")
         
-        choice = input("> ")
+        choice = input("Choose a number to continue > ")
         if choice == "1":
             list_continent_countries()
             after_results_menu()
@@ -100,7 +100,7 @@ def after_results_menu():
         print("1. Go back")
         print("2. Return to main menu")
 
-        choice = input("> ")
+        choice = input("Choose a number to continue > ")
         if choice == "1":
             return
         elif choice == "2":
