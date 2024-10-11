@@ -34,7 +34,6 @@ def opening_menu():
     print("1. Countries I've visited")
     print("2. Continents I've visited")
     
-# COUNTRIES MENU
 def countries_menu():
     while True:
         print("**Countries I've Visited**")
