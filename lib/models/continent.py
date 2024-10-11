@@ -44,7 +44,7 @@ class Continent:
                 "Number of countries must be an integer."
             )
         
-    #CLASS METHOD - CREATE A TABLE   
+    # CLASS METHOD - CREATE A TABLE   
     @classmethod
     def create_table(cls):
         sql = """
@@ -56,7 +56,7 @@ class Continent:
         CURSOR.execute(sql)
         CONN.commit()
 
-    #CLASS METHOD - DROP TABLE
+    # CLASS METHOD - DROP TABLE
     @classmethod
     def drop_table(cls):
         sql = """
@@ -65,7 +65,7 @@ class Continent:
         CURSOR.execute(sql)
         CONN.commit()
 
-    #SAVE METHOD
+    # SAVE METHOD
     def save(self):
         sql = """
             INSERT INTO continents (name, num_countries)
@@ -77,14 +77,14 @@ class Continent:
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
-    #CLASS METHOD - CREATE ENTRY
+    # CLASS METHOD - CREATE ENTRY
     @classmethod
     def create(cls, name, num_countries):
         continent = cls(name, num_countries)
         continent.save()
         return continent 
     
-    #UPDATE METHOD
+    # UPDATE METHOD
     def update(self):
         sql = """
             UPDATE continents
@@ -94,7 +94,7 @@ class Continent:
         CURSOR.execute(sql, (self.name, self.num_countries, self.id))
         CONN.commit()
 
-    #DELETE METHOD
+    # DELETE METHOD
     def delete(self):
         sql = """
             DELETE FROM continents
@@ -107,7 +107,7 @@ class Continent:
 
         self.id = None
 
-    #CLASS METHOD - INSTANCE FROM DB
+    # CLASS METHOD - INSTANCE FROM DB
     @classmethod
     def instance_from_db(cls, row):
         continent = cls.all.get(row[0])
@@ -120,7 +120,7 @@ class Continent:
             cls.all[continent.id] = continent
         return continent
 
-    #CLASS METHOD - GET ALL
+    # CLASS METHOD - GET ALL
     @classmethod
     def get_all(cls):
         sql = """
@@ -132,7 +132,7 @@ class Continent:
 
         return [cls.instance_from_db(row) for row in rows]
     
-    #CLASS METHOD - FIND BY NAME
+    # CLASS METHOD - FIND BY NAME
     @classmethod
     def find_by_name(cls, name):
         sql = """
@@ -144,6 +144,7 @@ class Continent:
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
+    # GET ALL COUNTRIES WITHIN A GIVEN CONTINENT
     def countries(self):
         from models.country import Country
         sql = """
