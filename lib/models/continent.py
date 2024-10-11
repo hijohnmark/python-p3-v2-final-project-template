@@ -84,6 +84,7 @@ class Continent:
         continent.save()
         return continent 
     
+    #UPDATE METHOD
     def update(self):
         sql = """
             UPDATE continents
@@ -93,6 +94,7 @@ class Continent:
         CURSOR.execute(sql, (self.name, self.num_countries, self.id))
         CONN.commit()
 
+    #DELETE METHOD
     def delete(self):
         sql = """
             DELETE FROM continents
