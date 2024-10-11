@@ -5,17 +5,17 @@ class Country:
 
     all = {}
     
-    def __init__(self, name, year, rating, continent_name, id=None):
+    def __init__(self, name, year, rating, continent_id, id=None):
         self.id = id
         self.name = name
         self.year = year
         self.rating = rating
-        self.continent_name = continent_name
+        self.continent_id = continent_id
 
     def __repr__(self):
         return(
             f"<Country {self.id}: {self.name}, visited in {self.year}, rated {self.rating}/10 , " +
-            f"Continent: {self.continent_name}>"
+            f"Continent id: {self.continent_id}>"
         )
     
     # SET PROPERTIES FOR CLASS ATTRIBUTES
@@ -59,19 +59,15 @@ class Country:
             )
     
     @property
-    def continent_name(self):
-        return self._continent_name
+    def continent_id(self):
+        return self._continent_id
     
-    @continent_name.setter
-    def continent_name(self, continent_name):
-        if continent_name in Continent.CONTINENTS:
-            self._continent_name = continent_name
+    @continent_id.setter
+    def continent_id(self, continent_id):
+        if type(continent_id) is int and Continent.find_by_id(continent_id):
+            self._continent_id = continent_id
         else:
-            raise ValueError(
-                "Please enter a valid continent "
-                "(Africa, Antarctica, Asia, North America, "
-                "South America, Europe, or Australia)."
-            )
+            raise ValueError("continent_id must reference a continent in the database")
     
     # CLASS METHOD - CREATE A COUNTRY TABLE
     @classmethod
@@ -82,8 +78,8 @@ class Country:
             name TEXT,
             year INTEGER,
             rating INTEGER,
-            continent_name TEXT,
-            FOREIGN KEY (continent_name) REFERENCES continents(name))    
+            continent_id INTEGER,
+            FOREIGN KEY (continent_id) REFERENCES continents(id))    
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -99,12 +95,12 @@ class Country:
 
     def save(self):
         sql = """
-            INSERT INTO countries (name, year, rating, continent_name)
+            INSERT INTO countries (name, year, rating, continent_id)
             VALUES (?, ?, ?, ?)
         """
 
         CURSOR.execute(sql, (self.name, self.year, 
-                             self.rating, self.continent_name))
+                             self.rating, self.continent_id))
         CONN.commit()
 
         self.id = CURSOR.lastrowid
@@ -123,8 +119,8 @@ class Country:
 
     #CLASS METHOD CREATE NEW ENTRY
     @classmethod
-    def create(cls, name, year, rating, continent_name):
-        country = cls(name, year, rating, continent_name)
+    def create(cls, name, year, rating, continent_id):
+        country = cls(name, year, rating, continent_id)
         country.save()
         return country
     
@@ -135,7 +131,7 @@ class Country:
             country.name = row[1]
             country.year = row[2]
             country.rating = row[3]
-            country.continent_name = row[4]
+            country.continent_id = row[4]
         else:
             country = cls(row[1], row[2], row[3], row[4])
             country.id = row[0]

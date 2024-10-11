@@ -3,17 +3,14 @@ from models.__init__ import CURSOR, CONN
 class Continent:
 
     all = {}
-    CONTINENTS = ["Africa", "Antarctica", 
-                  "Asia", "North America", "South America", 
-                  "Europe", "Australia"]
     
-    def __init__(self, name, num_countries, id=None):
+    def __init__(self, name, id=None):
         self.id = id
         self.name = name
-        self.num_countries = num_countries
+        
 
     def __repr__(self):
-        return f"<Continent {self.id}: {self.name}, {self.num_countries} countries>"
+        return f"<Continent {self.id}: {self.name}>"
     
     # SET PROPERTIES FOR CLASS ATTRIBUTES
     @property
@@ -22,27 +19,13 @@ class Continent:
     
     @name.setter
     def name(self, name):
-        if name in Continent.CONTINENTS:
+        if isinstance(name, str) and len(name) > 0:
             self._name = name
         else:
             raise ValueError(
-                "Continent must be "
-                "Africa, Antarctica, Asia, North America, "
-                "South America, Europe, or Australia."
+                "Please enter a continent name with at least one alphanumeric character."
             )
         
-    @property
-    def num_countries(self):
-        return self._num_countries
-    
-    @num_countries.setter
-    def num_countries(self, num_countries):
-        if isinstance(num_countries, int):
-            self._num_countries = num_countries
-        else:
-            raise ValueError(
-                "Number of countries must be an integer."
-            )
         
     # CLASS METHOD - CREATE A TABLE   
     @classmethod
@@ -50,8 +33,7 @@ class Continent:
         sql = """
             CREATE TABLE IF NOT EXISTS continents (
             id INTEGER PRIMARY KEY,
-            name TEXT,
-            num_countries INTEGER)
+            name TEXT)
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -68,10 +50,10 @@ class Continent:
     # SAVE METHOD
     def save(self):
         sql = """
-            INSERT INTO continents (name, num_countries)
-            VALUES (?, ?)
+            INSERT INTO continents (name)
+            VALUES (?)
         """
-        CURSOR.execute(sql, (self.name, self.num_countries))
+        CURSOR.execute(sql, (self.name,))
         CONN.commit()
 
         self.id = CURSOR.lastrowid
@@ -79,8 +61,8 @@ class Continent:
 
     # CLASS METHOD - CREATE ENTRY
     @classmethod
-    def create(cls, name, num_countries):
-        continent = cls(name, num_countries)
+    def create(cls, name):
+        continent = cls(name)
         continent.save()
         return continent 
     
@@ -88,10 +70,10 @@ class Continent:
     def update(self):
         sql = """
             UPDATE continents
-            SET name = ?, num_countries = ?
+            SET name = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.name, self.num_countries, self.id))
+        CURSOR.execute(sql, (self.name, self.id))
         CONN.commit()
 
     # DELETE METHOD
@@ -113,9 +95,8 @@ class Continent:
         continent = cls.all.get(row[0])
         if continent:
             continent.name = row[1]
-            continent.num_countries = row[2]
         else:
-            continent = cls(row[1], row[2])
+            continent = cls(row[1])
             continent.id = row[0]
             cls.all[continent.id] = continent
         return continent
