@@ -103,7 +103,8 @@ class Continent:
         del type(self).all[self.id]
 
         self.id = None
-
+        
+    #CLASS METHOD - INSTANCE FROM DB
     @classmethod
     def instance_from_db(cls, row):
         continent = cls.all.get(row[0])
