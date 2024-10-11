@@ -98,21 +98,21 @@ def delete_continent():
         print(f'{name_} not found in visited continents. Please try again.')
 
 def display_country_details():
-    name_ = input("Enter a country name to see details: ")
+    name_ = input("Enter a country you've visited to see details: ")
     if country := Country.find_by_name(name_):
         print(
             f"You last visited {country.name} "
             f"in {country.year}. "
             f"You gave your experience a rating of {country.rating}/10.")
     else:
-        print(f"{name_} not found in visited countries. Please try again.")
+        print(f"Bummer, you haven't visited {name_} yet! Please try again.")
 
 
 def display_continent_details():
-    name_ = input("Enfter a continent name to see details: ")
+    name_ = input("Enter a continent you've visited to see details: ")
     if continent := Continent.find_by_name(name_):
         print(
             f"{continent.name} contains {continent.num_countries} countries."
         )
     else:
-        print(f"{name_} not found in visited continents. Please try again.")
+        print(f"Bummer, you haven't visited {name_} yet! Please try again.")
