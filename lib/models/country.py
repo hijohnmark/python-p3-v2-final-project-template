@@ -72,7 +72,8 @@ class Country:
                 "(Africa, Antarctica, Asia, North America, "
                 "South America, Europe, or Australia)."
             )
-        
+    
+    # CLASS METHOD - CREATE A COUNTRY TABLE
     @classmethod
     def create_table(cls):
         sql = """
