@@ -49,7 +49,7 @@ def add_new_country():
         country = Country.create(name, year, rating, continent_name)
         print(f"{country.name} successfully added!")
     except Exception as exc:
-        print("Error creating country: ", exc)
+        print("Error: ", exc)
 
 def delete_country():
     name_ = input("Which country would you like to delete? ")
@@ -71,6 +71,7 @@ def add_new_continent():
         Continent.create("Australia", 3)
         print("G'day mate! Australia has been added successfully.")
     elif name == "South America":
+        Continent.create("South America", )
         print("Ándale! South America has been added successfully.")
     elif name == "North America":
         Continent.create("North America", 23)
@@ -82,7 +83,11 @@ def add_new_continent():
         Continent.create("Asia", 48)
         print("Asia has been added successfully.")
     else:
-        print("Invalid continent. Please try again!")
+        print(
+            "Continent must be "
+            "Africa, Antarctica, Asia, North America, "
+            "South America, Europe, or Australia."
+        )
 
 def delete_continent():
     name_ = input("Which continent would you like to delete? ")

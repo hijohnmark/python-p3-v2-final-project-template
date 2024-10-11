@@ -4,9 +4,6 @@ from models.continent import Continent
 class Country:
 
     all = {}
-    CONTINENTS = ["Africa", "Antarctica", 
-                  "Asia", "North America", "South America", 
-                  "Europe", "Australia"]
     
     def __init__(self, name, year, rating, continent_name, id=None):
         self.id = id
@@ -66,13 +63,13 @@ class Country:
     
     @continent_name.setter
     def continent_name(self, continent_name):
-        if continent_name in Country.CONTINENTS:
+        if continent_name in Continent.CONTINENTS:
             self._continent_name = continent_name
         else:
             raise ValueError(
                 "Please enter a valid continent "
                 "(Africa, Antarctica, Asia, North America, "
-                "South America, Europe, or Australia). "
+                "South America, Europe, or Australia)."
             )
         
     @classmethod

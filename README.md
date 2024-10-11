@@ -1,172 +1,151 @@
-# Phase 3 CLI+ORM Project Template
+# Travel Tracker - A Streamlined CLI Travel Tracking Tool
 
-## Learning Goals
+Travel Tracker is an intuitive CLI that allows you to keep track of the countries you've visited all around the world. You can organize these countries by continent, rate your experiences there, and add and delete entries as you travel to exciting new destinations.
 
-- Discuss the basic directory structure of a CLI.
-- Outline the first steps in building a CLI.
+## CLI Overview
 
----
+The CLI takes the user through a series of logical steps to add, remove, and view information about database entries related to countries and continents visited. The main menu allows the user to exit the program, or navigate to either the countries or continents menu. In each of these menus, the user can easily add, delete, or view information about any entries in the database. Every menu allows the user to navigate back to the main menu, or to the countries or continents menu direction (eliminating the need to step back and then forward again).
 
-## Introduction
+This CLI is achieved by implementing a Country and Continent model, where one continent may contain many countries, and each country is given a foreign key that references the continent it belongs to.
 
-You now have a basic idea of what constitutes a CLI. Fork and clone this lesson
-for a project template for your CLI.
+### Continent Model
+The `continent.py` file contains the Continent class and its methods, which allow it to create a database of visited continents. In addition, this class takes name and num_countries (the number of countries in that continent) as attritubes, with an optional id attribute given a default value of 0.
 
-Take a look at the directory structure:
+The Continent class contains the following methods: 
 
-```console
-.
-├── Pipfile
-├── Pipfile.lock
-├── README.md
-└── lib
-    ├── models
-    │   ├── __init__.py
-    │   └── model_1.py
-    ├── cli.py
-    ├── debug.py
-    └── helpers.py
-```
+1. **`__init__(self, name, num_countries, id=None)`**: Initializes a new `Continent` object with a name, number of countries, and optionally an ID.
+   
+2. **`__repr__(self)`**: Returns a string representation of the `Continent` object with its ID, name, and number of countries.
 
-Note: The directory also includes two files named `CONTRIBUTING.md` and
-`LICENSE.md` that are specific to Flatiron's curriculum. You can disregard or
-delete the files if you want.
+3. **`name(self)` (property)**: Retrieves the name of the continent.
 
----
+4. **`name(self, name)` (setter)**: Sets the name of the continent if it is valid, raising a `ValueError` for invalid continent names.
 
-## Generating Your Environment
+5. **`num_countries(self)` (property)**: Retrieves the number of countries in the continent.
 
-You might have noticed in the file structure- there's already a Pipfile!
+6. **`num_countries(self, num_countries)` (setter)**: Sets the number of countries in the continent, raising a `ValueError` if the input is not an integer.
 
-Install any additional dependencies you know you'll need for your project by
-adding them to the `Pipfile`. Then run the commands:
+7. **`create_table(cls)`**: Creates a SQL table for storing continents if it does not already exist.
 
-```console
-pipenv install
-pipenv shell
-```
+8. **`drop_table(cls)`**: Drops the SQL table for continents if it exists.
 
----
+9. **`save(self)`**: Saves the current `Continent` instance to the database and updates its ID.
 
-## Generating Your CLI
+10. **`create(cls, name, num_countries)`**: Creates a new `Continent` instance, saves it to the database, and returns the instance.
 
-A CLI is, simply put, an interactive script and prompts the user and performs
-operations based on user input.
+11. **`update(self)`**: Updates the database entry for the current `Continent` instance.
 
-The project template has a sample CLI in `lib/cli.py` that looks like this:
+12. **`delete(self)`**: Deletes the current `Continent` instance from the database and removes it from the `all` dictionary.
 
-```py
-# lib/cli.py
+13. **`instance_from_db(cls, row)`**: Retrieves a `Continent` instance from the database or creates one from a database row.
 
-from helpers import (
-    exit_program,
-    helper_1
-)
+14. **`get_all(cls)`**: Retrieves all continent records from the database and returns them as `Continent` instances.
 
+15. **`find_by_name(cls, name)`**: Finds and returns a `Continent` instance from the database based on the continent name.
 
-def main():
-    while True:
-        menu()
-        choice = input("> ")
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            helper_1()
-        else:
-            print("Invalid choice")
+16. **`countries(self)`**: Retrieves and returns all countries associated with the continent from the database.
 
+### Country Model
 
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. Some useful function")
+The `country.py` file contains the Country class and its methods, which allow it to create a database of visited continents. In addition, this class takes name, year, rating, and continent_name attributes, with an optional id attribute given a default value of 0.
 
+The Country class contains the following methods: 
 
-if __name__ == "__main__":
-    main()
-```
+1. **`__init__(self, name, year, rating, continent_name, id=None)`**: Initializes a new `Country` object with a name, year of visit, rating, continent name, and optionally an ID.
 
-The helper functions are located in `lib/helpers.py`:
+2. **`__repr__(self)`**: Returns a string representation of the `Country` object, including its ID, name, year of visit, rating, and continent name.
 
-```py
-# lib/helpers.py
+3. **`name(self)` (property)**: Retrieves the name of the country.
 
-def helper_1():
-    print("Performing useful function#1.")
+4. **`name(self, name)` (setter)**: Sets the name of the country, raising a `ValueError` if the name is not a valid non-empty string.
+
+5. **`year(self)` (property)**: Retrieves the year the country was visited.
+
+6. **`year(self, year)` (setter)**: Sets the year the country was visited, raising a `ValueError` if the year is not a valid integer or is before 1904.
+
+7. **`rating(self)` (property)**: Retrieves the rating of the country.
+
+8. **`rating(self, rating)` (setter)**: Sets the rating of the country, raising a `ValueError` if the rating is not an integer between 0 and 10.
+
+9. **`continent_name(self)` (property)**: Retrieves the continent name of the country.
+
+10. **`continent_name(self, continent_name)` (setter)**: Sets the continent name, raising a `ValueError` if the continent name is not a valid option from the predefined list.
+
+11. **`create_table(cls)`**: Creates a SQL table for storing countries, linking each country to a continent.
+
+12. **`drop_table(cls)`**: Drops the SQL table for countries if it exists.
+
+13. **`save(self)`**: Saves the current `Country` instance to the database and updates its ID.
+
+14. **`delete(self)`**: Deletes the current `Country` instance from the database and removes it from the `all` dictionary.
+
+15. **`create(cls, name, year, rating, continent_name)`**: Creates a new `Country` instance, saves it to the database, and returns the instance.
+
+16. **`instance_from_db(cls, row)`**: Retrieves a `Country` instance from the database or creates one from a database row.
+
+17. **`get_all(cls)`**: Retrieves all country records from the database and returns them as `Country` instances.
+
+18. **`find_by_id(cls, id)`**: Finds and returns a `Country` instance from the database based on the country ID.
+
+19. **`find_by_name(cls, name)`**: Finds and returns a `Country` instance from the database based on the country name.
 
 
-def exit_program():
-    print("Goodbye!")
-    exit()
-```
+### Helpers
 
-You can run the template CLI with `python lib/cli.py`, or include the shebang
-and make it executable with `chmod +x`. The template CLI will ask for input, do
-some work, and accomplish some sort of task.
+The `helpers.py` file contains all methods accessed by the CLI. It contains the following methods:
 
-Past that, CLIs can be whatever you'd like, as long as you follow the project
-requirements.
 
-Of course, you will update `lib/cli.py` with prompts that are appropriate for
-your application, and you will update `lib/helpers.py` to replace `helper_1()`
-with a useful function based on the specific problem domain you decide to
-implement, along with adding other helper functions to the module.
+1. **`helper_1()`**: Prints a message indicating that a useful function is being performed.
 
-In the `lib/models` folder, you should rename `model_1.py` with the name of a
-data model class from your specific problem domain, and add other classes to the
-folder as needed. The file `lib/models/__init__.py` has been initialized to
-create the necessary database constants. You need to add import statements to
-the various data model classes in order to use the database constants.
+2. **`exit_program()`**: Prints a goodbye message and exits the program.
 
-You are also welcome to implement a different module and directory structure.
-However, your project should be well organized, modular, and follow the design
-principal of separation of concerns, which means you should separate code
-related to:
+3. **`initialize_continents()`**: Creates the continents table and inserts Asia, Europe, and North America into the database.
 
-- User interface
-- Data persistence
-- Problem domain rules and logic
+4. **`list_continents()`**: Retrieves and prints the names of all continents from the database.
 
----
+5. **`list_countries()`**: Retrieves and prints the names of all countries from the database.
 
-## Updating README.md
+6. **`list_continent_countries()`**: Prompts for a continent name, then retrieves and prints all countries associated with that continent from the database.
 
-`README.md` is a Markdown file that should describe your project. You will
-replace the contents of this `README.md` file with a description of **your**
-actual project.
+7. **`add_new_country()`**: Prompts the user for details about a new country and adds it to the database.
 
-Markdown is not a language that we cover in Flatiron's Software Engineering
-curriculum, but it's not a particularly difficult language to learn (if you've
-ever left a comment on Reddit, you might already know the basics). Refer to the
-cheat sheet in this assignments's resources for a basic guide to Markdown.
+8. **`delete_country()`**: Prompts for a country name and deletes the corresponding country from the database if it exists.
 
-### What Goes into a README?
+9. **`add_new_continent()`**: Prompts the user for a continent name and adds the corresponding continent to the database.
 
-This README serves as a template. Replace the contents of this file to describe
-the important files in your project and describe what they do. Each Python file
-that you edit should get at least a paragraph, and each function should be
-described with a sentence or two.
+10. **`delete_continent()`**: Prompts for a continent name and deletes the corresponding continent from the database if it exists.
 
-Describe your actual CLI script first, and with a good level of detail. The rest
-should be ordered by importance to the user. (Probably functions next, then
-models.)
+11. **`display_country_details()`**: Prompts for a country name and displays its visit year and rating if the country exists in the database.
 
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
+12. **`display_continent_details()`**: Prompts for a continent name and displays the number of countries in that continent if it exists in the database.
+
+
+### CLI 
+
+The `cli.py` file contains the menu and navigation structure of this program. These menus are organized via the following methods:
+
+1. **`main()`**: Continuously displays the opening menu and handles user input to navigate to the countries or continents menu, or exit the program.
+
+2. **`opening_menu()`**: Displays the main menu options for exiting the program or navigating to the countries or continents menu.
+
+3. **`countries_menu()`**: Displays a menu of options related to countries, allowing the user to view, add, or delete countries, or navigate to the continents menu or main menu.
+
+4. **`continents_menu()`**: Displays a menu of options related to continents, allowing the user to view details, add or delete continents, or navigate to the countries menu or main menu.
+
+5. **`after_results_menu()`**: Displays options to go back to the previous menu or return to the main menu after a result is shown or an action is completed.
+
 
 ---
 
-## Conclusion
+## Planned features
 
-A lot of work goes into a good CLI, but it all relies on concepts that you've
-practiced quite a bit by now. Hopefully this template and guide will get you off
-to a good start with your Phase 3 Project.
+The following features are planned for future development phases:
 
-Happy coding!
-
----
-
-## Resources
-
-- [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
+- Organize all countries by most recently visited
+- Update information about country
+- See what kind of experience I had there (rating out of 10)
+- Add multiple visits per country and years visited
+- Show percentage of countries I’ve visited within a content
+- Color code continents by how many countries I’ve visited: Red (0-24%) > Orange (25-49%) > Yellow (50-75%) > Green (76-99%) > Blue (100%)
+- Separate class for countries I want to visit
+- Auto-add continents when countries are added that include a continent that has not yet been added to the database.

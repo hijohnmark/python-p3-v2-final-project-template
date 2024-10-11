@@ -3,7 +3,10 @@ from models.__init__ import CURSOR, CONN
 class Continent:
 
     all = {}
-
+    CONTINENTS = ["Africa", "Antarctica", 
+                  "Asia", "North America", "South America", 
+                  "Europe", "Australia"]
+    
     def __init__(self, name, num_countries, id=None):
         self.id = id
         self.name = name
@@ -18,11 +21,13 @@ class Continent:
     
     @name.setter
     def name(self, name):
-        if isinstance(name, str) and len(name):
+        if name in Continent.CONTINENTS:
             self._name = name
         else:
             raise ValueError(
-                "Continent name must be a non-empty string."
+                "Continent must be "
+                "Africa, Antarctica, Asia, North America, "
+                "South America, Europe, or Australia."
             )
         
     @property
