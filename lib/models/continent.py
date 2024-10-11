@@ -43,7 +43,7 @@ class Continent:
             raise ValueError(
                 "Number of countries must be an integer."
             )
-        
+    #CLASS METHOD - CREATE A TABLE   
     @classmethod
     def create_table(cls):
         sql = """
