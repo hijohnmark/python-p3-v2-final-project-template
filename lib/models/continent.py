@@ -15,6 +15,7 @@ class Continent:
     def __repr__(self):
         return f"<Continent {self.id}: {self.name}, {self.num_countries} countries>"
     
+    # SET PROPERTIES FOR CLASS ATTRIBUTES
     @property
     def name(self):
         return self._name 
