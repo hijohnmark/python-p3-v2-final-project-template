@@ -88,6 +88,7 @@ class Country:
         CURSOR.execute(sql)
         CONN.commit()
 
+    #CLASS METHOD - DROP TABLE
     @classmethod
     def drop_table(cls):
         sql = """
@@ -120,6 +121,7 @@ class Country:
         del type(self).all[self.id]
         self.id = None
 
+    #CLASS METHOD CREATE NEW ENTRY
     @classmethod
     def create(cls, name, year, rating, continent_name):
         country = cls(name, year, rating, continent_name)
