@@ -68,7 +68,7 @@ def countries_menu():
 def continents_menu():
     while True:
         print("**Continents I've Visited**")
-        print(list_continents())
+        list_continents()
         print("Please select an option by number:")
         print("1. Countries I've visited by continent")
         print("2. View continent details")
