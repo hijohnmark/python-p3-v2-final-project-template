@@ -2,9 +2,6 @@
 from models.continent import Continent
 from models.country import Country
 
-def helper_1():
-    print("Performing useful function#1.")
-
 
 def exit_program():
     print("Goodbye!")
