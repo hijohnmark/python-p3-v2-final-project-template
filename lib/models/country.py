@@ -79,7 +79,8 @@ class Country:
             year INTEGER,
             rating INTEGER,
             continent_id INTEGER,
-            FOREIGN KEY (continent_id) REFERENCES continents(id))    
+            FOREIGN KEY (continent_id) REFERENCES continents(id) ON DELETE CASCADE
+            )    
         """
         CURSOR.execute(sql)
         CONN.commit()

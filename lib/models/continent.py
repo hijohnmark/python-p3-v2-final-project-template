@@ -12,7 +12,6 @@ class Continent:
     def __repr__(self):
         return f"<Continent {self.id}: {self.name}>"
     
-    # SET PROPERTIES FOR CLASS ATTRIBUTES
     @property
     def name(self):
         return self._name 
@@ -27,7 +26,6 @@ class Continent:
             )
         
         
-    # CLASS METHOD - CREATE A TABLE   
     @classmethod
     def create_table(cls):
         sql = """
@@ -38,7 +36,6 @@ class Continent:
         CURSOR.execute(sql)
         CONN.commit()
 
-    # CLASS METHOD - DROP TABLE
     @classmethod
     def drop_table(cls):
         sql = """
@@ -47,7 +44,6 @@ class Continent:
         CURSOR.execute(sql)
         CONN.commit()
 
-    # SAVE METHOD
     def save(self):
         sql = """
             INSERT INTO continents (name)
@@ -59,14 +55,12 @@ class Continent:
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
-    # CLASS METHOD - CREATE ENTRY
     @classmethod
     def create(cls, name):
         continent = cls(name)
         continent.save()
         return continent 
     
-    # UPDATE METHOD
     def update(self):
         sql = """
             UPDATE continents
@@ -76,7 +70,6 @@ class Continent:
         CURSOR.execute(sql, (self.name, self.id))
         CONN.commit()
 
-    # DELETE METHOD
     def delete(self):
         sql = """
             DELETE FROM continents
@@ -89,7 +82,6 @@ class Continent:
 
         self.id = None
 
-    # CLASS METHOD - INSTANCE FROM DB
     @classmethod
     def instance_from_db(cls, row):
         continent = cls.all.get(row[0])
@@ -101,7 +93,6 @@ class Continent:
             cls.all[continent.id] = continent
         return continent
 
-    # CLASS METHOD - GET ALL
     @classmethod
     def get_all(cls):
         sql = """
@@ -113,7 +104,6 @@ class Continent:
 
         return [cls.instance_from_db(row) for row in rows]
     
-    # CLASS METHOD - FIND BY NAME
     @classmethod
     def find_by_name(cls, name):
         sql = """
@@ -125,15 +115,25 @@ class Continent:
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
-    # GET ALL COUNTRIES WITHIN A GIVEN CONTINENT
     def countries(self):
         from models.country import Country
         sql = """
             SELECT * FROM countries
-            WHERE continent_name = ?
+            WHERE continent_id = ?
         """
-        rows = CURSOR.execute(sql, (self.name,)).fetchall()
+        rows = CURSOR.execute(sql, (self.id,)).fetchall()
 
         return [
             Country.instance_from_db(row) for row in rows
         ]
+    
+    @classmethod
+    def find_by_id(cls, id):
+        sql = """
+            SELECT *
+            FROM continents
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None

@@ -1,7 +1,7 @@
 # lib/helpers.py
 from models.continent import Continent
 from models.country import Country
-
+from models.__init__ import CONN, CURSOR
 
 def exit_program():
     print("Goodbye!")
@@ -38,11 +38,33 @@ def add_new_country():
     name = input("Which country would you like to add? ")
     year = input("What year did you visit? ")
     rating = input("What would you rate this country out of 10? ")
-    continent_name = input("Which continent is this country located in? ")
+    continent = input("Which continent is this country located in? ")
     try:
         year = int(year)
         rating = int(rating)
-        country = Country.create(name, year, rating, continent_name)
+        
+        sql = """
+            SELECT id
+            FROM continents
+            WHERE LOWER(name) = LOWER(?)
+        """
+
+        CURSOR.execute(sql, (continent,))
+        continent_result = CURSOR.fetchone()
+
+        if continent_result:
+            continent_id = continent_result[0]
+        else:
+            create_continent = input(f"Continent '{continent}' not found. "
+                                     "Would you like to add it? (yes/no): ").strip().lower()
+            if create_continent == "yes":
+                Continent.create(continent)
+                continent_id = CURSOR.lastrowid
+                print(f"Continent {continent} successfully added!")
+            else:
+                raise ValueError("Cannot create a country without a continent.")
+
+        country = Country.create(name, year, rating, continent_id)
         print(f"{country.name} successfully added!")
     except Exception as exc:
         print("Error: ", exc)
@@ -57,32 +79,9 @@ def delete_country():
 
 def add_new_continent():
     name = input("Which continent would you like to add? ")
-    if name == "Antarctica":
-        Continent.create("Antarctica", 0)
-        print("Brrrr! Antarctica has been added successfully.")
-    elif name == "Africa":
-        Continent.create("Africa", 54)
-        print("It's time for Africa! Africa has been added successfully.")
-    elif name == "Australia":
-        Continent.create("Australia", 3)
-        print("G'day mate! Australia has been added successfully.")
-    elif name == "South America":
-        Continent.create("South America", 15)
-        print("Ándale! South America has been added successfully.")
-    elif name == "North America":
-        Continent.create("North America", 23)
-        print("North America has been added successfully.")
-    elif name == "Europe":
-        Continent.create("Europe", 50)
-        print("Europe has been added successfully.")
-    elif name == "Asia":
-        Continent.create("Asia", 48)
-        print("Asia has been added successfully.")
-    else:
-        print(
-            "Continent must be "
-            "Africa, Antarctica, Asia, North America, "
-            "South America, Europe, or Australia."
+    Continent.create(name)
+    print(
+        f"{name} successfully added to Continents."
         )
 
 def delete_continent():
