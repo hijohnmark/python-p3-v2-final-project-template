@@ -26,6 +26,9 @@ def list_countries():
 def list_continent_countries():
     name_ = input("Enter the name of the continent: ")
     if continent := Continent.find_by_name(name_):
+        print(' ')
+        print(f"You've visited the following countries in {continent.name}:")
+        print(' ')
         countries = continent.countries()
         for country in countries:
             print(country.name)
