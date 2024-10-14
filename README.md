@@ -1,17 +1,22 @@
+Here’s the updated README reflecting the changes you've made, particularly the use of the `country_id` attribute as a foreign key and the new menu structure for both countries and continents:
+
+---
+
 # Travel Tracker - A Streamlined CLI Travel Tracking Tool
 
 Travel Tracker is an intuitive CLI that allows you to keep track of the countries you've visited all around the world. You can organize these countries by continent, rate your experiences there, and add and delete entries as you travel to exciting new destinations.
 
 ## CLI Overview
 
-The CLI takes the user through a series of logical steps to add, remove, and view information about database entries related to countries and continents visited. The main menu allows the user to exit the program, or navigate to either the countries or continents menu. In each of these menus, the user can easily add, delete, or view information about any entries in the database. Every menu allows the user to navigate back to the main menu, or to the countries or continents menu direction (eliminating the need to step back and then forward again).
+The CLI takes the user through a series of logical steps to add, remove, and view information about database entries related to countries and continents visited. The main menu allows the user to exit the program or navigate to either the countries or continents menu. In each of these menus, the user can easily add, delete, or view information about any entries in the database. Each menu allows the user to navigate back to the main menu, or to the countries or continents menu directly (eliminating the need to step back and then forward again).
 
-This CLI is achieved by implementing a Country and Continent model, where one continent may contain many countries, and each country is given a foreign key that references the continent it belongs to.
+This CLI is achieved by implementing a `Country` and `Continent` model, where one continent may contain many countries, and each country is given a `country_id` as a foreign key that references the continent it belongs to.
 
 ### Continent Model
-The `continent.py` file contains the Continent class and its methods, which allow it to create a database of visited continents. In addition, this class takes name and num_countries (the number of countries in that continent) as attritubes, with an optional id attribute given a default value of 0.
 
-The Continent class contains the following methods: 
+The `continent.py` file contains the `Continent` class and its methods, which allow it to create a database of visited continents. This class takes `name` and `num_countries` (the number of countries in that continent) as attributes, with an optional `id` attribute given a default value of 0.
+
+The `Continent` class contains the following methods: 
 
 1. **`__init__(self, name, num_countries, id=None)`**: Initializes a new `Continent` object with a name, number of countries, and optionally an ID.
    
@@ -47,13 +52,13 @@ The Continent class contains the following methods:
 
 ### Country Model
 
-The `country.py` file contains the Country class and its methods, which allow it to create a database of visited continents. In addition, this class takes name, year, rating, and continent_name attributes, with an optional id attribute given a default value of 0.
+The `country.py` file contains the `Country` class and its methods, which allow it to create a database of visited countries. This class takes `name`, `year`, `rating`, and `continent_id` attributes, with an optional `id` attribute given a default value of 0.
 
-The Country class contains the following methods: 
+The `Country` class contains the following methods: 
 
-1. **`__init__(self, name, year, rating, continent_name, id=None)`**: Initializes a new `Country` object with a name, year of visit, rating, continent name, and optionally an ID.
+1. **`__init__(self, name, year, rating, continent_id, id=None)`**: Initializes a new `Country` object with a name, year of visit, rating, continent ID, and optionally an ID.
 
-2. **`__repr__(self)`**: Returns a string representation of the `Country` object, including its ID, name, year of visit, rating, and continent name.
+2. **`__repr__(self)`**: Returns a string representation of the `Country` object, including its ID, name, year of visit, rating, and continent ID.
 
 3. **`name(self)` (property)**: Retrieves the name of the country.
 
@@ -67,11 +72,11 @@ The Country class contains the following methods:
 
 8. **`rating(self, rating)` (setter)**: Sets the rating of the country, raising a `ValueError` if the rating is not an integer between 0 and 10.
 
-9. **`continent_name(self)` (property)**: Retrieves the continent name of the country.
+9. **`continent_id(self)` (property)**: Retrieves the continent ID of the country.
 
-10. **`continent_name(self, continent_name)` (setter)**: Sets the continent name, raising a `ValueError` if the continent name is not a valid option from the predefined list.
+10. **`continent_id(self, continent_id)` (setter)**: Sets the continent ID, raising a `ValueError` if the continent ID does not correspond to a valid continent.
 
-11. **`create_table(cls)`**: Creates a SQL table for storing countries, linking each country to a continent.
+11. **`create_table(cls)`**: Creates a SQL table for storing countries, linking each country to a continent using the foreign key `continent_id`.
 
 12. **`drop_table(cls)`**: Drops the SQL table for countries if it exists.
 
@@ -79,7 +84,7 @@ The Country class contains the following methods:
 
 14. **`delete(self)`**: Deletes the current `Country` instance from the database and removes it from the `all` dictionary.
 
-15. **`create(cls, name, year, rating, continent_name)`**: Creates a new `Country` instance, saves it to the database, and returns the instance.
+15. **`create(cls, name, year, rating, continent_id)`**: Creates a new `Country` instance, saves it to the database, and returns the instance.
 
 16. **`instance_from_db(cls, row)`**: Retrieves a `Country` instance from the database or creates one from a database row.
 
@@ -89,11 +94,9 @@ The Country class contains the following methods:
 
 19. **`find_by_name(cls, name)`**: Finds and returns a `Country` instance from the database based on the country name.
 
-
 ### Helpers
 
 The `helpers.py` file contains all methods accessed by the CLI. It contains the following methods:
-
 
 1. **`helper_1()`**: Prints a message indicating that a useful function is being performed.
 
@@ -105,7 +108,7 @@ The `helpers.py` file contains all methods accessed by the CLI. It contains the 
 
 5. **`list_countries()`**: Retrieves and prints the names of all countries from the database.
 
-6. **`list_continent_countries()`**: Prompts for a continent name, then retrieves and prints all countries associated with that continent from the database.
+6. **`list_continent_countries()`**: Prompts for a continent ID, then retrieves and prints all countries associated with that continent from the database.
 
 7. **`add_new_country()`**: Prompts the user for details about a new country and adds it to the database.
 
@@ -115,10 +118,9 @@ The `helpers.py` file contains all methods accessed by the CLI. It contains the 
 
 10. **`delete_continent()`**: Prompts for a continent name and deletes the corresponding continent from the database if it exists.
 
-11. **`display_country_details()`**: Prompts for a country name and displays its visit year and rating if the country exists in the database.
+11. **`display_country_details()`**: Displays details for a selected country, including its visit year and rating.
 
-12. **`display_continent_details()`**: Prompts for a continent name and displays the number of countries in that continent if it exists in the database.
-
+12. **`display_continent_details()`**: Displays the number of countries in a selected continent if it exists in the database.
 
 ### CLI 
 
@@ -132,7 +134,11 @@ The `cli.py` file contains the menu and navigation structure of this program. Th
 
 4. **`continents_menu()`**: Displays a menu of options related to continents, allowing the user to view details, add or delete continents, or navigate to the countries menu or main menu.
 
-5. **`after_results_menu()`**: Displays options to go back to the previous menu or return to the main menu after a result is shown or an action is completed.
+5. **`select_country(country)`**: Displays details of a selected country, allowing the user to delete it, return to the countries menu, or return to the main menu.
+
+6. **`select_continent(continent)`**: Displays details of a selected continent and its associated countries, allowing the user to add or delete countries, delete the continent, or return to the continents menu or main menu.
+
+7. **`after_results_menu()`**: Displays options to go back to
 
 
 ---
