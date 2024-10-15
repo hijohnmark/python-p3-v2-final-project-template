@@ -112,7 +112,7 @@ def display_continent_details():
     if continent := Continent.find_by_name(name_):
         num_countries = len(continent.countries())
         print(
-            f"You've visited {num_countries} countries in {continent.name}:"
+            f"You've visited {num_countries} countries in {continent.name}."
         )
         countries = continent.countries()
         for country in countries:
