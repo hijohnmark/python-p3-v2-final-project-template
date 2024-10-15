@@ -1,5 +1,6 @@
 from models.__init__ import CURSOR, CONN
 from models.continent import Continent
+import re
 
 class Country:
 
@@ -25,11 +26,13 @@ class Country:
     
     @name.setter
     def name(self, name):
-        if isinstance(name, str) and len(name):
+        clean_name = name.replace(' ', '').replace('-', '')
+        
+        if clean_name.isalpha() and len(name) > 0:
             self._name = name
-        else: 
+        else:
             raise ValueError(
-                "Name must be a non-empty string."
+                "Country name must be at least one letter and cannot contain any numbers or special characters."
             )
         
     @property
