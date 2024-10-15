@@ -81,11 +81,14 @@ def delete_country():
         print(f'{name_} not found in visited countries. Please try again.')
 
 def add_new_continent():
-    name = input("Which continent would you like to add? ")
-    Continent.create(name)
-    print(
-        f"{name} successfully added to Continents."
-        )
+    try:
+        name = input("Which continent would you like to add? ")
+        Continent.create(name)
+        print(
+            f"{name} successfully added to Continents."
+            )
+    except Exception as exc:
+        print("Error:", exc)
 
 def delete_continent():
     name_ = input("Which continent would you like to delete? ")
@@ -120,3 +123,4 @@ def display_continent_details():
 
     else:
         print(f"Bummer, you haven't visited {name_} yet! Please try again.")
+

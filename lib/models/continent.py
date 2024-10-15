@@ -18,13 +18,14 @@ class Continent:
     
     @name.setter
     def name(self, name):
-        if isinstance(name, str) and len(name) > 0:
+        clean_name = name.replace(' ', '')
+
+        if clean_name.isalpha() and len(name) > 0:
             self._name = name
         else:
             raise ValueError(
-                "Please enter a continent name with at least one alphanumeric character."
+                "Continent name must be at least one letter and cannot contain any numbers or special characters."
             )
-        
         
     @classmethod
     def create_table(cls):
