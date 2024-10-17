@@ -73,7 +73,7 @@ def add_new_country():
             print(' ')
     
     continent = input("Which continent is this country located in? ")
-    
+
     try:
         
         sql = """
@@ -153,12 +153,10 @@ def display_continent_details():
     name_ = input("Enter a continent you've visited to see details: ")
     if continent := Continent.find_by_name(name_):
         num_countries = len(continent.countries())
+        print(' ')
         print(
             f"You've visited {num_countries} countries in {continent.name}."
         )
-        countries = continent.countries()
-        for country in countries:
-            print(country.name)
 
     else:
         print(f'{name_} not found in visited continents.')
