@@ -7,12 +7,6 @@ def exit_program():
     print("Goodbye!")
     exit()
 
-def initialize_continents():
-    Continent.create_table()
-    Continent.create("Asia", 48)
-    Continent.create("Europe", 50)
-    Continent.create("North America", 23)
-
 def list_continents():
     continents = Continent.get_all()
     for continent in continents:
@@ -33,39 +27,81 @@ def list_continent_countries():
         for country in countries:
             print(country.name)
     else:
-        print(
-            f"Continent {name_} not found. Please enter a continent you have visited before."
-            )
+        print(f"{name_} not found in visited continents.")
+        print("Please enter a continent you have visited before and check spelling.")
+
+def list_countries_by_year():
+    year_ = input("Enter year of visit using numeric digits: ")
+    if year_.isdigit():
+        if countries := Country.find_by_year(year_):
+            print(' ')
+            print(f"In {year_} you visited: ")
+            for country in countries:
+                print(country.name)
+        else:
+            print(' ')
+            if int(year_) > 2024:
+                print(
+                    f"{year_} is in the future. "
+                    "This is a travel tracker, not a fortune teller!")
+                print("Please input the current year or a previous year.")
+            else:
+                print(f"You did not visit any countries in {year_}.")
+    else:
+        print("Please input a year consisting of numeric digits.")
 
 def add_new_country():
     name = input("Which country would you like to add? ")
-    year = input("What year did you visit? ")
-    rating = input("What would you rate this country out of 10? ")
+
+    
+    while True:
+        try:
+            year = int(input("What year did you visit? "))
+            break
+        except ValueError:
+            print(' ')
+            print("Please input a year consisting of numeric digits.")
+            print(' ')
+    
+    while True:
+        try:
+            rating = int(input("What would you rate this country out of 10? "))
+            break
+        except ValueError:
+            print(' ')
+            print("Please enter a number between 1 and 10.")
+            print(' ')
+    
     continent = input("Which continent is this country located in? ")
+    
     try:
-        year = int(year)
-        rating = int(rating)
         
         sql = """
             SELECT id
             FROM continents
             WHERE LOWER(name) = LOWER(?)
         """
-
         CURSOR.execute(sql, (continent,))
         continent_result = CURSOR.fetchone()
 
         if continent_result:
             continent_id = continent_result[0]
         else:
-            create_continent = input(f"Continent '{continent}' not found. "
-                                     "Would you like to add it? (yes/no): ").strip().lower()
-            if create_continent == "yes":
-                Continent.create(continent)
-                continent_id = CURSOR.lastrowid
-                print(f"Continent {continent} successfully added!")
-            else:
-                raise ValueError("Cannot create a country without a continent.")
+            while True:
+                create_continent = input(f"Continent '{continent}' not found. "
+                                        "Would you like to add it? (yes/no): ").strip().lower()
+                if create_continent == "yes":
+                    Continent.create(continent)
+                    continent_id = CURSOR.lastrowid
+                    print(f"Continent {continent} successfully added!")
+                elif create_continent == "no":
+                    print(' ')
+                    print("You must choose an existing continent or create a continent to add a country.")
+                    return
+                else:
+                    print(' ')
+                    print("Please type yes or no.")
+                    print(' ')
 
         country = Country.create(name, year, rating, continent_id)
         print(f"{country.name} successfully added!")
@@ -78,7 +114,8 @@ def delete_country():
         country.delete()
         print(f"{name_} has been removed from visited countries.")
     else:
-        print(f'{name_} not found in visited countries. Please try again.')
+        print(f'{name_} not found in visited countries.')
+        print("Please enter a country you have visited before and check spelling.")
 
 def add_new_continent():
     try:
@@ -96,7 +133,8 @@ def delete_continent():
         continent.delete()
         print(f'{name_} has been removed from visited continents.')
     else:
-        print(f'{name_} not found in visited continents. Please try again.')
+        print(f'{name_} not found in visited continents.')
+        print("Please enter a continent you have visited before and check spelling.")
 
 def display_country_details():
     name_ = input("Enter a country you've visited to see details: ")
@@ -106,7 +144,8 @@ def display_country_details():
             f"in {country.year}. "
             f"You gave your experience a rating of {country.rating}/10.")
     else:
-        print(f"Bummer, you haven't visited {name_} yet! Please try again.")
+        print(f'{name_} not found in visited countries.')
+        print("Please enter a country you have visited before and check spelling.")
 
 
 
@@ -122,5 +161,6 @@ def display_continent_details():
             print(country.name)
 
     else:
-        print(f"Bummer, you haven't visited {name_} yet! Please try again.")
+        print(f'{name_} not found in visited continents.')
+        print("Please enter a continent you have visited before and check spelling.")
 

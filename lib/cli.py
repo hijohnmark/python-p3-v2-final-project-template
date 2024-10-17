@@ -10,7 +10,8 @@ from helpers import (
     add_new_continent,
     delete_continent,
     display_country_details,
-    display_continent_details
+    display_continent_details,
+    list_countries_by_year
 )
 
 
@@ -52,17 +53,17 @@ def countries_menu():
         print('--------------------------------------')
         print('Please select an option by number:')
         print(' ')
-        print("1. Find countries visited by continent")
+        print("1. Countries I've visited by year")
         print("2. View country details")
         print("3. Add country")
         print("4. Delete country")
-        print("5. Continents I've visited")
+        print("5. Continents menu")
         print("6. Main menu")
         print('--------------------------------------')
         print(' ')
         choice = input("> ")
         if choice == "1":
-            list_continent_countries()
+            list_countries_by_year()
             after_results_menu()
         elif choice == "2":
             display_country_details()
@@ -94,7 +95,8 @@ def continents_menu():
         print("2. View continent details")
         print("3. Add continent")
         print("4. Delete continent")
-        print("5. Main menu")
+        print("5. Countries menu")
+        print("6. Main menu")
         print('--------------------------------------')
         print(' ')
         
@@ -112,6 +114,8 @@ def continents_menu():
             delete_continent()
             after_results_menu()
         elif choice == "5":
+            countries_menu()
+        elif choice == "6":
             main()
         else:
             print("Invalid choice. Please try again!")

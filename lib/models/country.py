@@ -26,9 +26,8 @@ class Country:
     
     @name.setter
     def name(self, name):
-        clean_name = name.replace(' ', '').replace('-', '')
         
-        if clean_name.isalpha() and len(name) > 0:
+        if name.isalpha() and len(name) > 0:
             self._name = name
         else:
             raise ValueError(
@@ -41,11 +40,11 @@ class Country:
     
     @year.setter
     def year(self, year):
-        if isinstance(year, int) and year >=1904:
+        if isinstance(year, int) and year >= 1904:
             self._year = year
         else:
             raise ValueError(
-                "Please enter a valid year."
+                "Year must be a four digit number greater than or equal to 1904."
             )
         
     @property
@@ -164,6 +163,17 @@ class Country:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
+    @classmethod
+    def find_by_year(cls, year):
+        sql = """
+            SELECT *
+            FROM countries
+            WHERE year = ?
+        """
+
+        rows = CURSOR.execute(sql, (year,)).fetchall()
+        return [Country.instance_from_db(row) for row in rows]
+        
     @classmethod
     def find_by_name(cls, name):
         sql = """

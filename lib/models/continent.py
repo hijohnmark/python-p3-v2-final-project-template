@@ -18,9 +18,9 @@ class Continent:
     
     @name.setter
     def name(self, name):
-        clean_name = name.replace(' ', '')
-
-        if clean_name.isalpha() and len(name) > 0:
+        
+        # if name.isalpha() and len(name) > 0 and not Continent.find_by_name(name):
+        if name.isalpha() and len(name) > 0:
             self._name = name
         else:
             raise ValueError(
